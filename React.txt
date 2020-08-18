@@ -1,0 +1,58 @@
+React Learning Note
+
+一，虚拟dom virtual document object model
+
+dom的本质：浏览器中的概念，用js对象来表示页面上的元素，并提供操作dom对象的api；比如页面上的一个div
+虚拟dom：框架概念，程序员用js对象来模拟页面上的dom和dom元素
+意义：虚拟dom实现页面中dom的高效更新
+
+render一个表格去页面上
+	方案1:for循环整个数组，手动拼接<tr>
+	方案2:引用模板引擎，art-template
+上述方案性能问题：
+	如果用户点击了[时间] one attribute,想从大到小排序
+		1. 触发点击事件，在事件中把内存中的对象数组重新排序
+		2.排序之后，页面是旧的，内存中的对象数组是新的
+		3. 想办法把最新的数组重新render到页面上
+	for循环会渲染整个数组，前两个方案不能只render个别几个，没把性能做到最优
+优化：按需更新/render页面（只重新render更新的数据）
+
+如何实现按需render？ - dom树 - 谷歌pagesource的所有代码
+dom树：一个网页呈现的过程
+	1.浏览器请求服务器获得页面html代码
+	2.浏览器需要在内存中解析dom结构，并在浏览器内存中render出一个dom树
+	3.浏览器把dom树呈现在页面上
+实现：或许内存中新旧两个dom树进行对比，得到，按需更新
+
+如何或许dom树？
+	浏览器没有直接获取dom树的api，无法拿到浏览器内存中的dom树
+程序员可以手动模拟新旧两个dom树 - js对象
+
+
+模拟dom树例子 - js var一个div的object
+程序员手动模拟的新旧dom树就是react中虚拟dom的概念，目的是实现对象的告诉更新
+
+
+
+
+
+
+
+var div = {
+	tagName:'div',
+	attrs:{
+		id:'mydiv'
+		title:'divtittle'
+		'data-index':'0'
+	},
+	childrens:[
+	'element01',
+	{
+		tagName:'p',
+		attrs:{},
+		childrens:['element02']
+	}
+	]
+}
+
+
